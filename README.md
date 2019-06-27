@@ -39,11 +39,6 @@ Competencies: jQuery, Javascript, DOM
   })
 ```
 
-- Lets Review Branches, for each problem today we want you to create a branch for each function you try to create, so for example
-
-1. git checkout -b createSquares
-2. write your code
-3. git add & commit your code, then you are free to change back to the master branch, were you will be able to pull down the instructors code at anytime.
 
 
 - Now we need to write a function named (createSquares) that sets up our squares, Try to write a function that takes a parameter `numberOfSquares` that will create an arbitary number of divs depending on the parameter and attach them to the squares class from the html. 
