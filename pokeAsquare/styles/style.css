@@ -24,15 +24,32 @@ button {
   margin-right: 50%;
 }
 
-.squares {
+.squaresContainer {
   padding: 0 20px 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
-.squares div {
-  background-color: blue;
-  display: inline-block;
-  width:  7vh;
-  height: 7vh;
+.square {
+  width: 12vh;
+  height: 12vh;
   padding: 0;
-  margin-right: 1%;
+  margin: 5px;
+}
+
+.square.green {
+  background-color: green;
+}
+
+.square.red {
+  background-color: red;
+}
+
+.square.blue {
+  background-color: blue;
+}
+
+.square.hidden {
+  opacity: 0;
 }
