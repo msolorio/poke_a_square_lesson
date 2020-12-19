@@ -30,7 +30,7 @@ function getRandomColor() {
   return colorsList[randomNumber];
 }
 
-// make function to show the squares
+// Creates squares and adds them to the page
 function populateSquares(numberOfSquares) {
   for (let i = 0; i < numberOfSquares; i++) {
     const newSquare = $(`
@@ -40,24 +40,24 @@ function populateSquares(numberOfSquares) {
     $('.squaresContainer').append(newSquare);
   }
 }
-// make function to start the timer
+
 function startTimer() {
   const counter = setInterval(function() {
     timer--;
 
     renderStats();
 
-    // If timer is 0 and there are still squares left --> Game over
+    // If timer reaches 0 --> Game Over
     if (timer === 0) {
       $('#score').text(`Game Over! Your score is: ${score}`);
       clearInterval(counter);
     }
 
   }, 1000);
-  // start a timer at 0
-  // every second console.log one greater
 }
 
+// Returns true if there are any blue squares remaining
+// Returns false if there are none
 function blueSquaresRemain() {
   const blueSquares = $('.blue');
 
@@ -68,6 +68,9 @@ function blueSquaresRemain() {
   return true;
 }
 
+// Increases the round
+// Updates the timer back to 30
+// Resets the board with new squares
 function goToNextRound() {
   round++;
   time = 30;
@@ -77,19 +80,22 @@ function goToNextRound() {
 }
 
 function handleSquareClick(event) {
+  // Adds a class that will hide the square
   $(event.target).addClass('hidden');
   
+  // - if square clicked on is blue add one to the score
   if ($(event.target).hasClass('blue')) {
     $(event.target).removeClass('blue');
     
+    // - If all blue squares are gone, go to the next round
     if (!blueSquaresRemain()) {
       goToNextRound();
     }
-
+    
     score++;
     renderStats();
-    console.log('blue was clicked');
   } else {
+    // - if square clicked on is red or green subtract from the score
     if (score > 0) {
       score--;
       renderStats();
@@ -98,15 +104,9 @@ function handleSquareClick(event) {
 }
 
 function handleBeginClick() {
-  console.log('Game has started!')
   populateSquares(30);
   startTimer();
 }
-
-// - if square clicked on is blue add one to the score
-// - if square clicked on is red or green subtract from the score
-// - If all blue squares are gone, go to the next round
-// Inside the timer, check if the timer is 0
 
 // When button is clicked show 30 squares and start the timer at 30s
 // Add a listener to the begin button
