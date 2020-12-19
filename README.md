@@ -1,7 +1,7 @@
 
 ### Poke A Square
 
-- Were goin to make a game that looks like the following.
+- We are going to make a game that looks like the following.
 
 ![squareGame](squareGame.png)
 
