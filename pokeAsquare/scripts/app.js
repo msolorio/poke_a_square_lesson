@@ -13,6 +13,14 @@ If the timer gets to 0 update the display to show Game Over and show the score.
 */
 
 let timer = 30;
+let score = 0;
+let round = 1;
+
+function renderStats() {
+  $('#score').text(`Scoreboard: ${score}`);
+  $('#timer').text(`timer: ${timer}`);
+  $('#round').text(`round: ${round}`);
+}
 
 function getRandomColor() {
   // randomly returns red, green or blue
@@ -37,9 +45,11 @@ function startTimer() {
   const counter = setInterval(function() {
     timer--;
 
-    $('#timer').text(`timer: ${timer}s`);
+    renderStats();
 
+    // If timer is 0 and there are still squares left --> Game over
     if (timer === 0) {
+      $('#score').text(`Game Over! Your score is: ${score}`);
       clearInterval(counter);
     }
 
@@ -48,19 +58,59 @@ function startTimer() {
   // every second console.log one greater
 }
 
+function blueSquaresRemain() {
+  const blueSquares = $('.blue');
 
+  if (!blueSquares.length) {
+    return false;
+  }
 
-// Listen for a click on each square
+  return true;
+}
+
+function goToNextRound() {
+  round++;
+  time = 30;
+  renderStats();
+  $('.squaresContainer').empty();
+  populateSquares(30 + (round * 2));
+}
+
+function handleSquareClick(event) {
+  $(event.target).addClass('hidden');
+  
+  if ($(event.target).hasClass('blue')) {
+    $(event.target).removeClass('blue');
+    
+    if (!blueSquaresRemain()) {
+      goToNextRound();
+    }
+
+    score++;
+    renderStats();
+    console.log('blue was clicked');
+  } else {
+    if (score > 0) {
+      score--;
+      renderStats();
+    }
+  }
+}
+
+function handleBeginClick() {
+  console.log('Game has started!')
+  populateSquares(30);
+  startTimer();
+}
+
 // - if square clicked on is blue add one to the score
 // - if square clicked on is red or green subtract from the score
 // - If all blue squares are gone, go to the next round
 // Inside the timer, check if the timer is 0
-// If timer is 0 and there are still squares left --> Game over
 
 // When button is clicked show 30 squares and start the timer at 30s
 // Add a listener to the begin button
-$('#begin-button').on('click', function() {
-  console.log('Game has started!')
-  populateSquares(30);
-  startTimer();
-});
+$('#begin-button').on('click', handleBeginClick);
+
+// Listen for a click on each square
+$('.squaresContainer').on('click', '.square', handleSquareClick);
