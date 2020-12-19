@@ -35,7 +35,7 @@ let round = 1;
 - Let's start by listening for a click on our begin button. We usually like to keep our event listeners at the bottom of our JavaScript file.
 
 ```javascript
-  $('button').on('click', function() {
+  $('#begin-button').on('click', function() {
    console.log('this is working');
   });
 ```
@@ -45,9 +45,9 @@ let round = 1;
 ```javascript
   function populateSquares(numberOfSquares) {
     for (let i = 0; i < NumberOfSquares; i++){
-        const newSquare = $('<div/>');
+      const newSquare = $('<div/>');
 
-        $('.squares').append(newSquare);
+      $('.squaresContainer').append(newSquare);
     }
   }
 ```
@@ -76,12 +76,11 @@ function getRandomColor() {
 ```javascript
 function populateSquares(numberOfSquares) {
   for (let i = 0; i < numberOfSquares; i++) {
-    const randomColor = getRandomColor();
     const newSquare = $(`
-      <div class="square ${randomColor}"><div/>
+      <div class="square ${getRandomColor()}" />
     `);
-
-    squaresContainer.append(newSquare);
+    
+    $('.squaresContainer').append(newSquare);
   }
 }
 ```
@@ -90,24 +89,26 @@ function populateSquares(numberOfSquares) {
 
 
 ```javascript
-squaresContainer.on('click', '.square', handleSquareClick);
+$('.squaresContainer').on('click', '.square', handleSquareClick);
 ```
 
 ```javascript
 function handleSquareClick(event) {
+  $(event.target).addClass('hidden');
+
   if ($(event.target).hasClass('blue')) {
-    $(event.target).addClass('hidden').removeClass('blue');
+    $(event.target).removeClass('blue');
   }
 }
 ```
 In our CSS we are targeting the hidden class with `opacity: 0;` to hide the square.
 
--  One way to do it is like the following
-
 ```javascript
 function handleSquareClick(event) {
+  $(event.target).addClass('hidden');
+
   if ($(event.target).hasClass('blue')) {
-    $(event.target).addClass('hidden').removeClass('blue');
+    $(event.target).removeClass('blue');
     score++
   } else {
     if (score > 0) {
@@ -130,8 +131,10 @@ function renderStats() {
 - We can call `renderStats()` when we update the score when a square is clicked.
 ```javascript
 function handleSquareClick(event) {
+  $(event.target).addClass('hidden');
+
   if ($(event.target).hasClass('blue')) {
-    $(event.target).addClass('hidden').removeClass('blue');
+    $(event.target).removeClass('blue');
     score++
     renderStats();
   } else {
@@ -187,11 +190,10 @@ function handleBeginClick() {
  function goToNextRound() {
   round++;
   timer = 30;
-
-  squaresContainer.empty();
-  populateSquares(30 + (round * 2));
-
   renderStats();
+
+  $('.squaresContainer').empty();
+  populateSquares(30 + (round * 2));
 }
 ```
 
@@ -214,14 +216,17 @@ Now we want to use this function to check for blue squares every time we click a
 
 ```javascript
 function handleSquareClick(event) {
+  $(event.target).addClass('hidden');
+
   if ($(event.target).hasClass('blue')) {
-    $(event.target).addClass('hidden').removeClass('blue');
-    score++;
-    renderStats();
+    $(event.target).removeClass('blue');
 
     if (!blueSquaresRemain()) {
       goToNextRound();
     }
+    
+    score++;
+    renderStats();
   } else {
     if (score > 0) {
       score--;
